@@ -1,0 +1,29 @@
+#使用glusterfs做存储，不懂glusterfs的请参考其他文章
+#apiVersion: v1
+#kind: PersistentVolume
+#metadata:
+#  name: mysql-pv
+#spec:
+#  capacity:
+#    storage: 20Gi
+#  accessModes:
+#    - ReadWriteMany
+#  glusterfs:
+#    endpoints: "glusterfs-cluster"
+#    path: "gv1"
+#---
+#使用nfs做存储
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: lnmp-pv
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /data/share/lnmp-data
+    server: 192.168.8.244
+
+

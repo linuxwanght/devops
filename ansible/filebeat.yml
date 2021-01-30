@@ -1,0 +1,6 @@
+---
+- name: deploy filenbeat
+  hosts: filebeat-b
+  remote_user: ec2-user
+  roles:
+    - filebeat

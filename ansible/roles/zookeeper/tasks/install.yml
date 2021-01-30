@@ -1,0 +1,75 @@
+- name: Create a directory if it does not exist
+  file:
+    path: "{{ install_path }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ user }}"
+    group: "{{ user }}"    
+  tags: install 
+
+- name: copy and extract tarball  #解压压缩包，unarchive模块
+  unarchive:
+    src:  "{{ tarball_name }}"
+    dest: "{{ install_path }}"
+    mode: '0755'
+    owner: "{{ user }}"
+    group: "{{ user }}"    
+  tags: install
+
+- name: make link  #创建软连接
+  shell: ln -s /opt/application/zookeeper-3.4.10 /opt/application/zookeeper;chown "{{ user }}":"{{ user }}" /opt/application/zookeeper* -R 
+  tags: install 
+
+- name: Create a zookeeper data directory if it does not exist
+  file:
+    path: "{{ dataDir }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ user }}"
+    group: "{{ user }}"    
+  tags: install 
+
+
+- name: update configure   
+  template:
+    src: "{{ zookeeper_config }}"
+    dest: /opt/application/zookeeper/conf/zoo.cfg
+    mode: '0755'
+    owner: "{{ user }}"    
+    group: "{{ user }}"    
+  tags: install 
+  
+- name: set myid
+  shell: echo "{{id}}" > /opt/application/zookeeper/data/myid
+  tags: install
+
+- name: start zookeeper  #启动zookeeper
+  shell: whomaii;sh {{ install_path }}/{{ app_name }}/bin/zkServer.sh start
+  tags: install
+  register: result
+
+
+
+- name: start zookeeper  #停止zookeeper
+  shell: sh {{install_path}}/{{app_name}}/bin/zkServer.sh start
+  tags: start 
+  register: result
+
+- name: stop zookeeper  #停止zookeeper
+  shell: sh {{install_path}}/{{app_name}}/bin/zkServer.sh stop
+  tags: stop
+  register: result
+
+- name: yum nc
+  shell: which nc || sudo yum install nc -y
+  tags: status
+  register: result
+
+- name: zookeeper status
+  shell: echo mntr | nc 127.0.0.1 2181 | grep follower
+  tags: status
+  register: result
+
+- name: register stdout
+  debug: var=result.stdout_lines
+  tags: install,stop,start,status

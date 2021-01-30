@@ -1,0 +1,13 @@
+app_name: zookeeper
+tarball_name: zookeeper-3.4.10.tar.gz
+zookeeper_config: zoo.cfg.j2
+install_path: /opt/application
+dataDir: /opt/application/zookeeper/data
+dataLogDir: /opt/application/zookeeper/logs
+clientPort: 2181
+server.1: 10.79.34.207:2888:3888
+server.2: 10.79.35.211:2888:3888
+server.3: 10.79.36.43:2888:3888
+
+
+

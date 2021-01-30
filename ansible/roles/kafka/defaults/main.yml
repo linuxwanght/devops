@@ -1,0 +1,10 @@
+app_name: kafka
+tarball_name: kafka_2.12-2.7.0.tgz
+kafka_config: server.properties.j2
+install_path: /opt/application
+dataDir: /opt/application/kafka/data
+dataLogDir: /opt/application/kafka/logs
+zookeeper_cluster: 10.79.34.207:2181,10.79.35.211:2181,10.79.36.43:2181
+
+
+

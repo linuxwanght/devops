@@ -1,0 +1,6 @@
+---
+- name: deploy node_exporter
+  hosts: add
+  remote_user: ec2-user
+  roles:
+    - node_exporter

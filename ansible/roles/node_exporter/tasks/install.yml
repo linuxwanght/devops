@@ -1,0 +1,33 @@
+- name: groupadd prometheus #创建组，存在则忽略
+  group:
+     name: "{{ group }}"
+     gid: 888
+- name: useradd prometheus  #创建用户
+  user:
+     name: "{{ user }}"
+     group: "{{ group }}"
+     uid: 888
+     createhome: no
+     shell: /sbin/nologin
+- name: copy and extract tarball  #解压压缩包，unarchive模块
+  unarchive:
+    src: "{{ tarball_name }}"
+    dest: /usr/local
+- name: make link  #创建软连接
+  file: 
+    src: /usr/local/node_exporter-1.0.1.linux-amd64
+    dest: /usr/local/node_exporter
+    state: link
+- name: add service   #新增service
+  copy:
+    src: "{{ node_exporter_service }}"
+    dest: /usr/lib/systemd/system/
+    force: yes
+    group: root
+    owner: root
+    mode: 755    
+- name: enable  #测试nginx配置
+  shell: systemctl enable node_exporter
+- name: enable  #测试nginx配置
+  shell: systemctl start node_exporter
+

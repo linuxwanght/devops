@@ -1,0 +1,6 @@
+---
+- name: deploy kafka
+  hosts: kafka
+  remote_user: ec2-user
+  roles:
+    - kafka

@@ -1,0 +1,27 @@
+#唯一数字分别为1,2,2
+broker.id={{id}}
+#这个broker监听的端口
+prot=9092
+#唯一填服务器IP
+host.name={{ hostip }}
+num.network.threads=3
+num.io.threads=8
+socket.send.buffer.bytes=102400
+socket.receive.buffer.bytes=102400
+socket.request.max.bytes=104857600
+#kafka日志路径，不需要提前创建，启动kafka时创建
+log.dirs={{ dataLogDir }}
+#分片数，需要配置较大，分片影响读写速度
+num.partitions=16
+num.recovery.threads.per.data.dir=1
+offsets.topic.replication.factor=1
+transaction.state.log.replication.factor=1
+transaction.state.log.min.isr=1
+log.retention.hours=168
+log.segment.bytes=1073741824
+log.retention.check.interval.ms=300000
+#zookpeer集群
+zookeeper.connect={{zookeeper_cluster}}
+zookeeper.connection.timeout.ms=6000
+group.initial.rebalance.delay.ms=0
+

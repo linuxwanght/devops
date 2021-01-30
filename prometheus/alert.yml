@@ -1,0 +1,226 @@
+groups:
+- name: test-rule
+  rules:
+############################################        disk    ####################################################
+  - alert: HostUnusualDiskReadRate
+    expr: sum by (instance) (rate(node_disk_read_bytes_total[2m])) / 1024 / 1024 * on(instance) group_left(nodename) (node_uname_info) > 50
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host unusual disk read rate (instance {{ $labels.instance }})
+      description: Disk is probably reading too much data (> 50 MB/s)\n  VALUE = {{ $value }}\n  
+
+
+  - alert: HostUnusualDiskWriteRate
+    expr: sum by (instance) (rate(node_disk_written_bytes_total[2m])) / 1024 / 1024 * on(instance) group_left(nodename) (node_uname_info) > 50
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host unusual disk write rate (instance {{ $labels.instance }})
+      description: Disk is probably writing too much data (> 50 MB/s)\n  VALUE = {{ $value }}\n  
+
+
+  # Please add ignored mountpoints in node_exporter parameters like
+  # "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|run)($|/)".
+  # Same rule using "node_filesystem_free_bytes" will fire when disk fills for non-root users.
+  - alert: HostOutOfDiskSpace20
+    #expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 10 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
+    expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes * on(instance) group_left(nodename) (node_uname_info) < 20 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host out of disk space (instance {{ $labels.instance }}) 
+      description: Disk is almost full (< 10% left)\n  VALUE = {{ $value }}\n  
+
+  - alert: HostOutOfDiskSpace5
+    expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes * on(instance) group_left(nodename) (node_uname_info) < 5 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: Host out of disk space (instance {{ $labels.instance }})
+      description: Disk is almost full (< 5% left)\n  VALUE = {{ $value }}\n  
+
+
+  # Please add ignored mountpoints in node_exporter parameters like
+  # "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|run)($|/)".
+  # Same rule using "node_filesystem_free_bytes" will fire when disk fills for non-root users.
+  - alert: HostDiskWillFillIn24Hours10
+    expr: (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes * on(instance) group_left(nodename) (node_uname_info) < 10 and ON (instance, device, mountpoint) predict_linear(node_filesystem_avail_bytes{fstype!~"tmpfs"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host disk will fill in 24 hours (instance {{ $labels.instance }})
+      description: Filesystem is predicted to run out of space within the next 24 hours at current write rate\n  VALUE = {{ $value }}\n              
+
+  - alert: HostOutOfInodes20
+    expr: node_filesystem_files_free{mountpoint !~ "^/(sys|proc|dev|run).*"} / node_filesystem_files{mountpoint !~ "^/(sys|proc|dev|run).*"} * 100 * on(instance) group_left(nodename) (node_uname_info) < 20 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint !~ "^/(sys|proc|dev|run).*"} == 0
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host out of inodes (instance {{ $labels.instance }})
+      description: Disk is almost running out of available inodes (< 10% left)\n  VALUE = {{ $value }}\n  
+
+  - alert: HostInodesWillFillIn24Hours10
+    expr: node_filesystem_files_free{mountpoint !~ "^/(sys|proc|dev|run).*"} / node_filesystem_files{mountpoint !~ "^/(sys|proc|dev|run).*"} * 100 * on(instance) group_left(nodename) (node_uname_info) < 10 and predict_linear(node_filesystem_files_free{mountpoint !~ "^/(sys|proc|dev|run).*"}[1h], 24 * 3600) < 0 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint !~ "^/(sys|proc|dev|run).*"} == 0
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host inodes will fill in 24 hours (instance {{ $labels.instance }})
+      description: Filesystem is predicted to run out of inodes within the next 24 hours at current write rate\n  VALUE = {{ $value }}\n  
+
+
+  - alert: HostOutOfInodes5
+    expr: node_filesystem_files_free{mountpoint !~ "^/(sys|proc|dev|run).*"} / node_filesystem_files{mountpoint !~ "^/(sys|proc|dev|run).*"} * 100 * on(instance) group_left(nodename) (node_uname_info) < 5 and ON (instance, device, mountpoint) node_filesystem_readonly{mountpoint !~ "^/(sys|proc|dev|run).*"} == 0
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: Host out of inodes (instance {{ $labels.instance }})
+      description: Disk is almost running out of available inodes (< 10% left)\n  VALUE = {{ $value }}\n  
+
+
+#########################################################    cpu   #############################################
+  - alert: HostHighCpuLoad
+    expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[2m])) * 100 * on(instance) group_left(nodename) (node_uname_info)) > 90
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host high CPU load (instance {{ $labels.instance }})
+      description: CPU load is > 90%\n  VALUE = {{ $value }}\n  
+
+  - alert: CpuStealNoisyNeighbor
+    expr: avg by(instance) (rate(node_cpu_seconds_total{mode="steal"}[5m])) * 100 > 20
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: CPU steal noisy neighbor (instance {{ $labels.instance }})
+      description: CPU steal is > 20%. A noisy neighbor is killing VM performances or a spot instance may be out of credit.\n  VALUE = {{ $value }}\n  
+
+
+
+
+
+########################################################    memery     #################################################  
+  - alert: HostOutOfMemory
+    expr: (node_memory_Buffers_bytes + node_memory_Cached_bytes + node_memory_MemFree_bytes) / node_memory_MemTotal_bytes * on(instance) group_left(nodename) (node_uname_info) * 100 < 10
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host out of memory (instance {{ $labels.instance }})
+      description: Node memory is filling up (< 10% left)\n  VALUE = {{ $value }}\n  
+
+
+
+
+########################################################    network     ################################################# 
+  - alert: HostUnusualNetworkThroughputIn
+    expr: sum by (instance) (rate(node_network_receive_bytes_total[2m])) / 1024 / 1024 * on(instance) group_left(nodename) (node_uname_info) > 50
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host unusual network throughput in (instance {{ $labels.instance }})
+      description: Host network interfaces are probably receiving too much data (> 50 MB/s)\n  VALUE = {{ $value }}\n  
+
+
+  - alert: HostUnusualNetworkThroughputOut
+    expr: sum by (instance) (rate(node_network_transmit_bytes_total[2m])) / 1024 / 1024 * on(instance) group_left(nodename) (node_uname_info)> 50
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host unusual network throughput out (instance {{ $labels.instance }})
+      description: Host network interfaces are probably sending too much data (> 50 MB/s)\n  VALUE = {{ $value }}\n       
+
+  - alert: HostTCPSOCKETTIMEWAIT
+    expr: node_sockstat_TCP_tw * on(instance) group_left(nodename) (node_uname_info) > 8000
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host network tcp socket timewait out (instance {{ $labels.instance }})
+      description: Host network tcp socket timewait too big (> 8000)\n  VALUE = {{ $value }}\n      
+
+
+  - alert: HostTCPSOCKETUSED
+    expr: node_sockstat_sockets_used * on(instance) group_left(nodename) (node_uname_info) > 20000
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host network tcp socket used out (instance {{ $labels.instance }})
+      description: Host network tcp socket used too much (> 20000)\n  VALUE = {{ $value }}\n     
+      
+  - alert: HostTCPSOCKETUSED
+    expr: node_sockstat_sockets_used{instance="10.79.18.241:9100", job="node"} * on(instance) group_left(nodename) (node_uname_info) > 1000
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host network tcp socket used out (instance {{ $labels.instance }})
+      description: Host network tcp socket used too much (> 20000)\n  VALUE = {{ $value }}\n     
+      
+
+
+#########################################################  other       #############################################
+  - alert: HostOomKillDetected
+    expr: increase(node_vmstat_oom_kill[1m]) * on(instance) group_left(nodename) (node_uname_info) > 0
+    for: 0m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host OOM kill detected (instance {{ $labels.instance }})
+      description: OOM kill detected\n  VALUE = {{ $value }}\n  
+
+
+  # 1000 context switches is an arbitrary number.
+  # Alert threshold depends on nature of application.
+  # Please read: https://github.com/samber/awesome-prometheus-alerts/issues/58
+  - alert: HostContextSwitching
+    expr: (rate(node_context_switches_total[5m])) / (count without(cpu, mode) (node_cpu_seconds_total{mode="idle"})) * on(instance) group_left(nodename) (node_uname_info) > 8000
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host context switching (instance {{ $labels.instance }})
+      description: Context switching is growing on node (> 8000 / s)\n  VALUE = {{ $value }}\n  
+
+  - alert: HostSwapIsFillingUp
+    expr: (1 - (node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes))* 100 * on(instance) group_left(nodename) (node_uname_info) > 80
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host swap is filling up (instance {{ $labels.instance }})
+      description: Swap is filling up (>80%)\n  VALUE = {{ $value }}\n  
+
+################################################################ service ############################################
+  - alert: service tcp port test
+    expr: server_port_up != 1
+    for: 30s
+    labels:
+      severity: "critical"
+    annotations:
+      summary: "{{$labels.host}}:{{$labels.port}} 端口未探测到"
+      description: "请到登陆服务器：{{$labels.host}} 查看"
+
+  - alert: alive test
+    expr: up * on(instance) group_left(nodename) (node_uname_info) == 0
+    for: 30s
+    labels:
+      severity: "critical"
+    annotations:
+      summary: "{{$labels.instance}}: is down"
+      description: "{{$labels.instance}}: up is 0"
+
+

@@ -1,0 +1,6 @@
+---
+- name: deploy zookeeper
+  hosts: zookeeper
+  remote_user: ec2-user
+  roles:
+    - zookeeper

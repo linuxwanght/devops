@@ -1,0 +1,4 @@
+user: prometheus
+group: prometheus
+tarball_name: node_exporter-1.0.1.linux-amd64.tar.gz
+node_exporter_service: node_exporter.service
