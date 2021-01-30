@@ -3,29 +3,29 @@
     path: {{ install_path }}
     state: directory
     mode: '0755'
-  tags: inkafka  
+  tags: install
 
 - name: copy and extract tarball  #解压压缩包，unarchive模块
   unarchive:
     src:  {{ tarball_name }}
     dest: {{ install_path }}
-  tags: inkafka
+  tags: install
 
 - name: make link  #创建软连接
   file: 
     src:   /opt/application/kafka-3.4.10
     dest:  /opt/application/kafka
     state: link
-  tags: inkafka
+  tags: install
 
 - name: update configure   
   copy:
     src: {{ kafka_config }}
     dest: /opt/application/kafka/config/
-  tags: inkafka 
+  tags: install
   
 - name: start kafka  #启动zookeeper
   shell: /opt/application/kafka/bin/zookeeper-server-start.sh /opt/application/kafka/config/zookeeper.properties
-  tags: inkafka
+  tags: install
 
 

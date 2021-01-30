@@ -8,7 +8,7 @@ sha512：e45e6680a145628fd98009317e48a5c275b660be7aef28499976cc0d7f66bf6a81ea335
 ansible-playbook filebeat.yml -t install
 
 # update filebeat config
-ansible-playbook filebeat.yml -t update
+ansible-playbook filebeat.yml -t updateconfig
 
 # stop/start/restart fliebeat
 ansible-playbook filebeat.yml -t stop/start/restart
@@ -20,8 +20,8 @@ wget http://archive.apache.org/dist/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.
 md5: e4cf1b1593ca870bf1c7a75188f09678  zookeeper-3.4.10.tar.gz
 
 ### use
-ansible-playbook -i hosts/frankfurt  zookeeper.yml  -t inzookeeper
-ansible-playbook -i hosts/frankfurt  zookeeper.yml  -t stzookeeper
+ansible-playbook -i hosts/frankfurt  zookeeper.yml  -t install
+ansible-playbook -i hosts/frankfurt  zookeeper.yml  -t start/stop/updateconfig/status
 
 注：部署前需要修改defaults目录下main.yml文件，server.1-3。目标服务器安装位置
 
@@ -33,7 +33,7 @@ sha256: 3369b76cd2b0ba678b6d618deab320e565c3d93ccb5c2a0d5db51a53857768ae
 ### use
 ```
 # install node_exporter
-ansible-playbook node-exporter.yml
+ansible-playbook node-exporter.yml -t install/stop/start/restart
 ```
 
 ## kafka
@@ -43,7 +43,7 @@ wget https://apache.website-solution.net/kafka/2.7.0/kafka_2.12-2.7.0.tgz sha512
 ### use
 ```
 # install kafka
-ansible-playbook kafa.yml
+ansible-playbook kafa.yml -t install
 ```
 
 ## 每个角色的定义，以特定的层级目录结构进行组织。 

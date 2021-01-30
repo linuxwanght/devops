@@ -2,6 +2,7 @@
   group:
      name: "{{ group }}"
      gid: 888
+  tags: install   
 - name: useradd prometheus  #创建用户
   user:
      name: "{{ user }}"
@@ -9,15 +10,18 @@
      uid: 888
      createhome: no
      shell: /sbin/nologin
+  tags: install   
 - name: copy and extract tarball  #解压压缩包，unarchive模块
   unarchive:
     src: "{{ tarball_name }}"
     dest: /usr/local
+  tags: install  
 - name: make link  #创建软连接
   file: 
     src: /usr/local/node_exporter-1.0.1.linux-amd64
     dest: /usr/local/node_exporter
     state: link
+  tags: install  
 - name: add service   #新增service
   copy:
     src: "{{ node_exporter_service }}"
@@ -25,9 +29,19 @@
     force: yes
     group: root
     owner: root
-    mode: 755    
+    mode: 755  
+  tags: install    
 - name: enable  #测试nginx配置
   shell: systemctl enable node_exporter
+  tags: install
 - name: enable  #测试nginx配置
   shell: systemctl start node_exporter
+  tags: install
+- name: enable  #测试nginx配置
+  shell: systemctl stop node_exporter
+  tags: stop
+- name: enable  #测试nginx配置
+  shell: systemctl restart node_exporter
+  tags: restart    
+
 

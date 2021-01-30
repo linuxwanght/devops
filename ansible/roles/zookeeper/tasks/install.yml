@@ -37,28 +37,23 @@
     mode: '0755'
     owner: "{{ user }}"    
     group: "{{ user }}"    
-  tags: install 
+  tags: install,updateconfig
   
 - name: set myid
   shell: echo "{{id}}" > /opt/application/zookeeper/data/myid
-  tags: install
+  tags: install,updateconfig
 
-- name: start zookeeper  #启动zookeeper
-  shell: whomaii;sh {{ install_path }}/{{ app_name }}/bin/zkServer.sh start
-  tags: install
+- name: stop zookeeper  
+  shell: sh {{install_path}}/{{app_name}}/bin/zkServer.sh stop
+  tags: stop
   register: result
 
-
-
-- name: start zookeeper  #停止zookeeper
+- name: start zookeeper  
   shell: sh {{install_path}}/{{app_name}}/bin/zkServer.sh start
   tags: start 
   register: result
 
-- name: stop zookeeper  #停止zookeeper
-  shell: sh {{install_path}}/{{app_name}}/bin/zkServer.sh stop
-  tags: stop
-  register: result
+
 
 - name: yum nc
   shell: which nc || sudo yum install nc -y
@@ -72,4 +67,4 @@
 
 - name: register stdout
   debug: var=result.stdout_lines
-  tags: install,stop,start,status
+  tags: install,stop,start,status,updateconfig
