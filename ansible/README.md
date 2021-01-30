@@ -43,7 +43,7 @@ wget https://apache.website-solution.net/kafka/2.7.0/kafka_2.12-2.7.0.tgz sha512
 ### use
 ```
 # install kafka
-ansible-playbook kafa.yml -t install
+ansible-playbook kafa.yml -t install/start/stop
 ```
 
 ## 每个角色的定义，以特定的层级目录结构进行组织。 

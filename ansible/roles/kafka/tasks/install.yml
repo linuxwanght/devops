@@ -24,8 +24,13 @@
     dest: /opt/application/kafka/config/
   tags: install
   
-- name: start kafka  #启动zookeeper
+- name: start kafka  
   shell: /opt/application/kafka/bin/zookeeper-server-start.sh /opt/application/kafka/config/zookeeper.properties
-  tags: install
+  tags: install,start
+
+- name: stop kafka  
+  shell: /opt/application/kafka/bin/zookeeper-server-stop.sh /opt/application/kafka/config/zookeeper.properties
+  tags: stop
+
 
 
