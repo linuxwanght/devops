@@ -1,0 +1,3 @@
+tarball_name: jdk-8u251-linux-x64.tar.gz
+filebeat_config: jdk.sh
+

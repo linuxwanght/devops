@@ -1,3 +1,12 @@
+## jdk
+### download file
+wget https://xxx.xxx.com/software/jdk/jdk-8u251-linux-x64.tar.gz
+md5sum: becc86d9870fe5f48ca30c520c4b7ab8
+
+### use
+
+
+
 ## filebeat
 ### download file
 wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.10.1-x86_64.rpm
@@ -45,6 +54,10 @@ wget https://apache.website-solution.net/kafka/2.7.0/kafka_2.12-2.7.0.tgz sha512
 # install kafka
 ansible-playbook kafa.yml -t install/start/stop
 ```
+
+
+
+
 
 ## 每个角色的定义，以特定的层级目录结构进行组织。 
 - files：存放由copy或script等模块调用的文件； 
