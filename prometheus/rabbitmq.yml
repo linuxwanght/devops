@@ -9,7 +9,7 @@ groups:
       severity: critical
     annotations:
       summary: Rabbitmq down (instance {{ $labels.instance }})
-      description: RabbitMQ node down\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}      
+      description: "RabbitMQ node down\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"      
 
 
 
@@ -20,7 +20,7 @@ groups:
       severity: critical
     annotations:
       summary: Rabbitmq-dcloud cluster down (instance {{ $labels.instance }})
-      description: Less than 3 nodes running in RabbitMQ cluster\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}
+      description: "Less than 3 nodes running in RabbitMQ cluster\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
 
 
   - alert: RabbitmqClusterPartition
@@ -30,7 +30,7 @@ groups:
       severity: critical
     annotations:
       summary: Rabbitmq-dcloud cluster partition (instance {{ $labels.instance }})
-      description: Cluster partition\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}
+      description: "Cluster partition\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
 
   - alert: RabbitmqOutOfMemory
     expr: rabbitmq_node_mem_used / rabbitmq_node_mem_limit * 100 > 90
@@ -39,7 +39,7 @@ groups:
       severity: warning
     annotations:
       summary: Rabbitmq out of memory (instance {{ $labels.instance }})
-      description: Memory available for RabbmitMQ is low (< 10%)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}
+      description: "Memory available for RabbmitMQ is low (< 10%)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
 
   - alert: RabbitmqTooManyConnections
     expr: rabbitmq_connectionsTotal > 1000
@@ -48,7 +48,7 @@ groups:
       severity: warning
     annotations:
       summary: Rabbitmq too many connections (instance {{ $labels.instance }})
-      description: RabbitMQ instance has too many connections (> 1000)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}      
+      description: "RabbitMQ instance has too many connections (> 1000)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"      
 
 
   # Indicate the queue name in dedicated label.
@@ -59,7 +59,7 @@ groups:
       severity: warning
     annotations:
       summary: Rabbitmq dead letter queue filling up (instance {{ $labels.instance }})
-      description: Dead letter queue is filling up (> 10 msgs)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}
+      description: "Dead letter queue is filling up (> 10 msgs)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
 
   - alert: RabbitmqTooManyMessagesInQueue
     expr: rabbitmq_queue_messages_ready > 1000
@@ -68,7 +68,7 @@ groups:
       severity: warning
     annotations:
       summary: Rabbitmq too many messages in queue (instance {{ $labels.instance }})
-      description: Queue is filling up (> 1000 msgs)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}
+      description: "Queue is filling up (> 1000 msgs)\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
 
   - alert: RabbitmqNoConsumer
     expr: rabbitmq_queue_consumers == 0
@@ -77,5 +77,5 @@ groups:
       severity: critical
     annotations:
       summary: Rabbitmq no consumer (instance {{ $labels.instance }})
-      description: Queue has no consumer\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}      
+      description: "Queue has no consumer\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"     
 
