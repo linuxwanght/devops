@@ -1,36 +1,28 @@
-- name: copy jdk filebeat
-  copy:
+- name: copy and extract tarball  #解压压缩包，unarchive模块
+  unarchive:
     src: "{{ tarball_name }}"
-    dest: /usr/local/src
+    dest: /usr/local
+  tags: install  
+- name: make link  #创建软连接
+  file: 
+    src: /usr/local/jdk1.8.0_251
+    dest: /usr/local/jdk
+    state: link
+  tags: install  
+- name: add jdk.sh   #新增jdk.sh
+  copy:
+    src: "{{ add_path_sh }}"
+    dest: /etc/profile.d/
+    force: yes
+    group: root
+    owner: root
+    mode: 755  
+  tags: install    
+- name: update path  
+  shell: source /etc/profile.d/jdk.sh
   tags: install
-- name: install service   #新增service
-  shell: sudo yum install -y /usr/local/src/{{ tarball_name }}
+- name: eheck jdk version
+  shell: java -version
   tags: install
-- name: add service   #新增service
-  template:
-    src: "{{ filebeat_config }}"
-    dest: /etc/filebeat/filebeat.yml
-  tags: install,updateconfig
-- name: enable filebeat  #测试nginx配置
-  shell: systemctl enable filebeat
-  tags: install
-- name: check config #测试nginx配置
-  shell: filebeat test  config
-  notify:
-  - start filebeat
-  tags: install,start
-
-
-- name: check config #测试nginx配置
-  shell: filebeat test  config
-  notify:
-  - restart filebeat
-  tags: updateconfig
-- name: stop filebeat  #测试nginx配置
-  shell: systemctl stop filebeat
-  tags: stop
-- name: status filebeat  #测试nginx配置
-  shell: systemctl status filebeat
-  tags: status
-
+ 
 

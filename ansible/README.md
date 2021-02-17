@@ -4,7 +4,7 @@ wget https://xxx.xxx.com/software/jdk/jdk-8u251-linux-x64.tar.gz
 md5sum: becc86d9870fe5f48ca30c520c4b7ab8
 
 ### use
-
+ansible-playbook jdk1.8.yml -t install
 
 
 ## filebeat
