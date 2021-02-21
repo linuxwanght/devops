@@ -1,0 +1,57 @@
+filebeat.inputs:
+- type: log
+  enable: true
+  paths:
+     #-  /opt/application/{{ hostname }}/logs/server.log
+     -  /opt/application/logs/{{ hostname }}/{{ hostname }}.log
+  encoding: "utf-8"
+  document_type: log #这定输出时的document的type字段，可用来给日志分类，默认时log
+  scan_frequency: 10s #如果设置为0s，则filebeat会尽可能的去感知更新，cpu的占用会变高，默认是10s
+  clean_*: true
+  tags: ["{{ hostname }}"]
+  exclude_lines: ['^$']
+  multiline:
+    #pattern: '^\d{4}-\d{1,2}-\d{1,2}\s\d{1,2}:\d{1,2}:\d{1,2}'
+    pattern: '>>'
+    negate: true
+    match: after
+  tail_files: true
+
+ 
+
+#============================= Filebeat modules ===============================
+
+filebeat.config.modules:
+  # Glob pattern for configuration loading
+  path: ${path.config}/modules.d/*.yml
+
+  # Set to true to enable config reloading
+  reload.enabled: false
+
+  # Period on which files under path should be checked for changes
+  #reload.period: 10s
+
+#==================== Elasticsearch template setting ==========================
+
+setup.template.settings:
+  index.number_of_shards: 2
+  #index.codec: best_compression
+  #_source.enabled: false
+
+
+
+
+
+#================================ Outputs =====================================
+
+# Configure what output to use when sending the data collected by the beat.
+
+#-------------------------- Elasticsearch output ------------------------------
+setup.template.name: "{{ hostname }}"
+setup.template.pattern: "{{ hostname }}*"
+setup.ilm.enabled: false
+
+output.elasticsearch:
+  hosts: ["http://10.79.34.207:9200","http://10.79.35.211:9200","http://10.79.36.43:9200"]
+  index: {{ hostname }}-%{+YYYY.MM.dd}
+
