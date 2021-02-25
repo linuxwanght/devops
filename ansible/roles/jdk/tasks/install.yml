@@ -2,27 +2,29 @@
   unarchive:
     src: "{{ tarball_name }}"
     dest: /usr/local
-  tags: install  
+  become: yes
+  become_user: root
+  tags: install
 - name: make link  #创建软连接
-  file: 
+  file:
     src: /usr/local/jdk1.8.0_251
     dest: /usr/local/jdk
     state: link
-  tags: install  
+  become: yes
+  become_user: root
+  tags: install
 - name: add jdk.sh   #新增jdk.sh
   copy:
     src: "{{ add_path_sh }}"
     dest: /etc/profile.d/
-    force: yes
-    group: root
-    owner: root
-    mode: 755  
-  tags: install    
-- name: update path  
+  become: yes
+  become_user: root
+  tags: install
+- name: update path
   shell: source /etc/profile.d/jdk.sh
+  become: yes
+  become_user: root
   tags: install
 - name: eheck jdk version
   shell: java -version
-  tags: install
- 
-
+  tags: install,version
