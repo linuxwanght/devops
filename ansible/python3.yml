@@ -1,0 +1,6 @@
+---
+- name: deploy python3
+  hosts: python3
+  remote_user: ec2-user
+  roles:
+    - python3

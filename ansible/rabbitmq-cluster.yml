@@ -1,0 +1,6 @@
+---
+- name: deploy rabbitmq-cluster
+  hosts: rabbitmq-cluster
+  remote_user: ec2-user
+  roles:
+    - rabbitmq-cluster
