@@ -1,6 +1,6 @@
 ---
 - name: deploy jdk1.8
-  hosts: jdk1.8
+  hosts: all
   remote_user: ec2-user
   roles:
     - jdk
