@@ -1,24 +1,22 @@
 - name: install common command
   shell: sudo yum -y install yum-utils vim bind-utils ntpdate sysstat wget man mtr lsof iotop net-tools openssl-devel openssl-perl screen iostat subversion nscd lrzsz  unzip  telnet glances
   tags: install
-- name: install common command
-  shell: sudo yum -y install gcc gcc-c++ make cmake autoconf bzip2 bzip2-devel curl openssl  rsync gd zip perl httpd-tools    psmisc  epel*  python-pip python-devel      
-  tags: install
-
-- name: copy limit.conf
+- name: copy limits.conf
   copy:
-    src: limit.conf
-    dest: /etc/security/limit.conf
+    src: limits.conf
+    dest: /etc/security/limits.conf
+  become: yes
+  become_user: root
   tags: install
 - name: copy sysctl.conf
   copy:
     src: sysctl.conf
     dest: /etc/sysctl.conf
+  become: yes
+  become_user: root
   tags: install  
 - name: update sysctl
-  shell: sudo sysctl -p
+  shell: sysctl -p
+  become: yes
+  become_user: root
   tags: install
-
-
-
-

@@ -3,7 +3,7 @@
   hosts: all
   remote_user: ec2-user
   roles:
-    - inintal
+    - inital
 
 
 
