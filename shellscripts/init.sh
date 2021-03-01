@@ -118,6 +118,7 @@ echo "alias tcpstatus='netstat -n| awk '/^tcp/ {++S[$NF]} END {for(a in S) print
 [ -f /etc/sysctl.conf.bak ] && /bin/cp /etc/sysctl.conf.bak /etc/sysctl.conf.bak.$(date +%F-%H%M%S) ||/bin/cp /etc/sysctl.conf /etc/sysctl.conf.bak
 cat >> /etc/sysctl.conf <<EOF
 fs.file-max = 999999
+vm.max_map_count = 262122
 net.ipv4.conf.default.rp_filter = 1
 net.ipv4.conf.default.accept_source_route = 0
 kernel.sysrq = 0
