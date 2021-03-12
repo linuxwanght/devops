@@ -17,12 +17,12 @@ openssl req -in CSR.csr -pubkey -noout -outform pem | sha256sum
 证书证书链输入（server.ca-bundle）
 
 
-### tcp 状态统计
+## tcp 状态统计
 netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'
 
 
 
-### eureka curl手动下线
+## eureka curl手动下线
 curl -XDELETE http://10.79.18.73:8701/eureka/apps/USER-MANAGER-SERVICE/user-manager-service:10.79.17.109:8099
 sleep 8
 curl http://10.79.18.73:8701|grep "10.79.17.109" || sh stop.sh
@@ -39,7 +39,7 @@ curl http://10.79.18.73:8701|grep "10.79.18.212" || sh stop.sh
 sh start.sh
 
 
-### prometheus
+## prometheus
 * on(instance) group_left(nodename) (node_uname_info)
 
 server_port_up * on(instance) group_left(nodename) (server_port_up) != 1
@@ -47,16 +47,16 @@ server_port_up * on(instance) group_left(nodename) (server_port_up) != 1
 (node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes * on(instance) group_left(nodename) (node_uname_info) < 20 and ON (instance, device, mountpoint) node_filesystem_readonly == 0
 
 
-### redis 批量删除key
+## redis 批量删除key
 redis-cli -h 127.0.0.1 -n 10 keys "name:*" | xargs redis-cli -h 127.0.0.1 -n 10 del
 
 
 
-### es 删除实例
+## es 删除实例
 curl -XPUT '10.79.31.128:9200/_cluster/settings' -d '{"transient": {"cluster.routing.allocation.exclude._ip": "10.55.6.11"}}' 
 
 
-### es 只读属性删除
+## es 只读属性删除
 curl -XPUT -H "Content-Type: application/json" http://127.0.0.1:9200/retail_message_center/_settings -d '{"index.blocks.read_only_allow_delete": null}'
 
 curl http://localhost:9200/retail_message_center/_settings
@@ -65,7 +65,7 @@ curl -XPUT -H "Content-Type: application/json" http://10.79.31.12:9200/retail_me
 
 curl http://10.79.31.12:9200/retail_message_center/_settings
 
-### aws ec2硬盘扩容
+## aws ec2硬盘扩容
 sudo growpart /dev/nvme1n1 1
 sudo xfs_growfs -d /opt/application
 
