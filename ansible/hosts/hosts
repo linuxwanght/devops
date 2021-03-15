@@ -32,6 +32,21 @@
 10.79.17.111  hostname=androidpushproxy
 
 
+[eureka-oregon]
+10.88.3.208  defaultZone=http://10.88.3.208:8701/eureka/ ansible_ssh_user=ec2-user
+10.88.4.56   defaultZone=http://10.88.4.56:8701/eureka/  ansible_ssh_user=ec2-user
+
+[zookeeper-oregon]
+10.88.3.102 id=0
+10.88.4.76  id=1
+10.88.7.139 id=2
+
+[es-622-oregon]
+[zookeeper-singapore]
+10.63.21.54 id=0
+10.63.22.188  id=1
+10.63.22.177 id=2
+
 
 
 [filebeat-b]
