@@ -1,0 +1,44 @@
+- name: Create a directory if it does not exist
+  file:
+    path: "{{ install_path }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ user }}"
+    group: "{{ group }}" 
+  tags: install
+  register: result
+- name: copy rpm package
+  unarchive:
+    src: "{{ eurake_name }}"
+    dest: /opt/application/
+    mode: '0755'
+    owner: "{{ user }}"
+    group: "{{ group }}" 
+  tags: install
+  register: result
+
+- name: update config   #新增service
+  template:
+    src: "{{ eurake_config }}"
+    dest: /opt/application/retail-eureka/application.yml
+  tags: install,updateconfig
+  register: result
+- name:  start app
+  shell: echo $PATH;cd  /opt/application/retail-eureka/bin && sh start.sh
+  tags: start,install
+  register: result
+- name:  stop app
+  shell: cd /opt/application/retail-eureka/bin && sh stop.sh
+  tags: stop
+  register: result
+- name: eureka status
+  shell: ps -ef |grep eureka
+  tags: status
+  register: result
+
+- name: register stdout
+  debug: var=result.stdout_lines
+  tags: install,stop,start,status,updateconfig
+
+
+

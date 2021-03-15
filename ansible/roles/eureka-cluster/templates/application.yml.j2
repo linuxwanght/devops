@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: registry
+  cloud:
+    config:
+      uri: http://config:8888
+      fail-fast: true
+      password: root
+      username: user
+  thymeleaf:
+    enabled: false     
+eureka:
+  instance:
+    preferIpAddress: true
+  client:  
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: {{defaultZone}}
+  server:
+    enable-self-preservation: false
+server:
+  port: {{port}}
+security:
+  basic:
+    enabled: true
+  user:
+    name: {{name}}
+    password: {{password}}

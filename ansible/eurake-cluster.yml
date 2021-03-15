@@ -1,0 +1,6 @@
+---
+- name: deploy eureka-cluster
+  hosts: eureka-oregon
+  remote_user: ec2-user
+  roles:
+    - eureka-cluster

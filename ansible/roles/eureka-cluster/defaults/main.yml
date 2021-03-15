@@ -1,0 +1,9 @@
+eurake_name: retail-eureka.tar.gz
+eurake_config: application.yml.j2
+install_path: /opt/application
+user: ec2-user
+group: ec2-user
+port: 7001
+name: admin
+password: 123456
+
