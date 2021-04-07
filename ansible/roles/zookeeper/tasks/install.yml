@@ -1,3 +1,12 @@
+- name: 将原有的hosts文件备份
+  shell: mv /etc/hosts /etc/hosts_bak
+
+- name: 将ansible端的hosts复制到各自机器上
+  copy: src=hosts dest=/etc/ owner=root group=root mode=0644
+
+- name: 在新的hosts文件后面追加各自机器内网ip和hostname
+  lineinfile: dest=/etc/hosts line="{{IP}}  {{ansible_hostname}}"
+
 - name: Create a directory if it does not exist
   file:
     path: "{{ install_path }}"

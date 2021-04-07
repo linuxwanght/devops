@@ -28,6 +28,8 @@ ansible-playbook filebeat.yml -t stop/start/restart
 wget http://archive.apache.org/dist/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz
 md5: e4cf1b1593ca870bf1c7a75188f09678  zookeeper-3.4.10.tar.gz
 
+需要修改/etc/hosts文件
+
 ### use
 ansible-playbook -i hosts/frankfurt  zookeeper.yml  -t install
 ansible-playbook -i hosts/frankfurt  zookeeper.yml  -t start/stop/updateconfig/status

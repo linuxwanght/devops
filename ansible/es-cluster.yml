@@ -1,0 +1,6 @@
+---
+- name: deploy elasticsearch-cluster
+  hosts: es-cluster
+  remote_user: ec2-user
+  roles:
+    - es-cluster

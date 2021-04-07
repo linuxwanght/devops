@@ -1,0 +1,42 @@
+- name: Create a directory if it does not exist
+  file:
+    path: "{{ install_path }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ user }}"
+    group: "{{ user }}"    
+  tags: install 
+
+- name: copy and extract tarball  #解压压缩包，unarchive模块
+  unarchive:
+    src:  "{{ tarball_name }}"
+    dest: "{{ install_path }}"
+    mode: '0755'
+    owner: "{{ user }}"
+    group: "{{ user }}"    
+  tags: install
+
+
+
+- name: update configure   
+  template:
+    src: "{{ es_config }}"
+    dest: /opt/application/{{app_name}}/conf/elasticsearch.yml
+    mode: '0755'
+    owner: "{{ user }}"    
+    group: "{{ user }}"    
+  tags: install,updateconfig
+  
+
+  
+
+- name: start es 
+  shell: {{install_path}}/{{app_name}}/bin/elasticsearch -d
+  tags: start 
+  register: result
+
+
+
+- name: register stdout
+  debug: var=result.stdout_lines
+  tags: install,stop,start,status,updateconfig

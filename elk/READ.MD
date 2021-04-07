@@ -40,3 +40,10 @@ curl -XGET http://10.79.32.96:9200/_cat/indices
 
 # 设置所有索引副本为0
 curl -XPUT "http://10.79.34.207:9200/*/_settings" -H 'Content-Type: application/json' -d'{  "index": {        "number_of_replicas": "0"        }}'
+
+
+
+可以通过命令 _cluster/health 查看集群的健康状态，如下：
+Green 主分片与副本分片都正常
+Yellow 主分片正常，副本分片不正常
+Red 有主分片不正常，可能某个分片容量超过了磁盘大小等

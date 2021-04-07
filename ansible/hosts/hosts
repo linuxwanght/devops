@@ -42,10 +42,10 @@
 10.88.7.139 id=2
 
 [es-622-oregon]
-[zookeeper-singapore]
-10.63.21.54 id=0
-10.63.22.188  id=1
-10.63.22.177 id=2
+[es-cluster]
+10.63.21.54  nodename=node-01
+10.63.22.188 nodename=node-02
+10.63.22.177 nodename=node-03
 
 
 
