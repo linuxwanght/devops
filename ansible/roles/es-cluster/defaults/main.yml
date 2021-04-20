@@ -1,13 +1,10 @@
 app_name: elasticsearch-6.2.2
+nodename: elasticsearch
 tarball_name: elasticsearch-6.2.2.tar.gz
 zenhosts: "10.79.30.11","10.79.31.12","10.79.32.96"
 es_config: elasticsearch.yml.j2
 install_path: /opt/application
 
-
-server.1: node01:2888:3888
-server.2: node02:2888:3888
-server.3: node03:2888:3888
 
 
 

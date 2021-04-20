@@ -89,3 +89,7 @@ curl -d 'name=yyy&mobile=17782376789&detail_address=ddd' "127.0.0.1/api/mobile/m
 curl --header 'token:d46aeada5d74196a0efa7b2a2bfa9fa' --header 'uid:13045' "api.ginlongmonitoring.com/v1/device/inverter/data?device_id=100459476&start_date=2017-07-31+14%3A54%3A50&end_date=2017-07-31+16%3A54%3A50&perpage=1&timezone_id=PRC”
  
 curl -H "Content-Type:application/json" -X POST -d '{"header":{},"request":{"c":"position","m":"rpc/listRecommendPosition","p":{"uid":1226, "shop_id":4}}}' http://common-ats-blue.rpc/atsng/rpc
+
+## shell
+### find
+### ls
