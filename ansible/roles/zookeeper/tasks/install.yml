@@ -1,12 +1,3 @@
-- name: 将原有的hosts文件备份
-  shell: mv /etc/hosts /etc/hosts_bak
-
-- name: 将ansible端的hosts复制到各自机器上
-  copy: src=hosts dest=/etc/ owner=root group=root mode=0644
-
-- name: 在新的hosts文件后面追加各自机器内网ip和hostname
-  lineinfile: dest=/etc/hosts line="{{IP}}  {{ansible_hostname}}"
-
 - name: Create a directory if it does not exist
   file:
     path: "{{ install_path }}"
@@ -26,7 +17,7 @@
   tags: install
 
 - name: make link  #创建软连接
-  shell: ln -s /opt/application/zookeeper-3.4.10 /opt/application/zookeeper;chown "{{ user }}":"{{ user }}" /opt/application/zookeeper* -R 
+  shell: ln -s /opt/application/zookeeper-3.4.10 /opt/application/zookeeper;chown "{{ user }}":"{{ user }}" /opt/application/zookeeper* -R
   tags: install 
 
 - name: Create a zookeeper data directory if it does not exist
@@ -49,19 +40,29 @@
   tags: install,updateconfig
   
 - name: set myid
-  shell: echo "{{id}}" > /opt/application/zookeeper/data/myid
+  shell: echo "{{zkmyid}}" > /opt/application/zookeeper/data/myid
   tags: install,updateconfig
 
-- name: stop zookeeper  
-  shell: sh {{install_path}}/{{app_name}}/bin/zkServer.sh stop
+  
+- name: change dir authority
+  shell: chown "{{ user }}":"{{ user }}" /opt/application/zookeeper* -R
+  tags: install,updateconfig
+
+
+- name: stop zookeeper    
+  shell: sudo su - {{ user }} -c "sh {{install_path}}/{{app_name}}/bin/zkServer.sh stop"
   tags: stop
   register: result
 
 - name: start zookeeper  
-  shell: sh {{install_path}}/{{app_name}}/bin/zkServer.sh start
-  tags: start 
+  shell: sudo su - {{ user }} -c "sh {{install_path}}/{{app_name}}/bin/zkServer.sh start"
+  tags: start,install 
   register: result
 
+- name: check status of  zookeeper  
+  shell: sudo su - {{ user }} -c "sh {{install_path}}/{{app_name}}/bin/zkServer.sh status"
+  tags: newstatus 
+  register: result
 
 
 - name: yum nc
@@ -77,3 +78,4 @@
 - name: register stdout
   debug: var=result.stdout_lines
   tags: install,stop,start,status,updateconfig
+

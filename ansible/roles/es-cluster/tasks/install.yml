@@ -16,12 +16,24 @@
     group: "{{ user }}"    
   tags: install
 
+- name: make link  #创建软连接
+  shell: ln -s /opt/application/elasticsearch-6.2.2 /opt/application/elasticsearch;chown "{{ user }}":"{{ user }}" /opt/application/elasticsearch* -R
+  tags: install 
+
+- name: Create  es data directory if it does not exist
+  file:
+    path: "{{ dataDir }}"
+    state: directory
+    mode: '0755'
+    owner: "{{ user }}"
+    group: "{{ user }}"    
+  tags: install 
 
 
 - name: update configure   
   template:
-    src: "{{ es_config }}"
-    dest: /opt/application/{{app_name}}/conf/elasticsearch.yml
+    src: "{{ elasticsearch_config }}"
+    dest: /opt/application/elasticsearch/config/elasticsearch.yml
     mode: '0755'
     owner: "{{ user }}"    
     group: "{{ user }}"    
@@ -29,14 +41,33 @@
   
 
   
+- name: update jvm 
+  shell: sed -i "/^-Xms1g/s@.*@-Xms{{jvm}}g@g"  /opt/application/elasticsearch/config/jvm.options
+  tags: install,updateconfig,updatejvm
 
-- name: start es 
-  shell: {{install_path}}/{{app_name}}/bin/elasticsearch -d
-  tags: start 
+- name: update jvm 
+  shell: sed -i "/^-Xmx1g/s@.*@-Xmx{{jvm}}g@g"  /opt/application/elasticsearch/config/jvm.options
+  tags: install,updateconfig,updatejvm
+
+
+- name: stop elasticsearch    
+  shell: sudo su - {{ user }} -c "kill -9 `ps axu|grep  elasticsearch |grep -v grep|awk '{print $2}'`"
+  tags: stop
   register: result
 
 
+- name: start elasticsearch  
+  shell: sudo su - {{ user }} -c "/opt/application/elasticsearch/bin/elasticsearch -d"
+  tags: start,install 
+  register: result
+
+- name: check process of elasticsearch
+  shell: sudo su - {{ user }} -c "ps axu|grep  elasticsearch |grep -v grep || echo 'elasticsearch not work'"
+  tags: status 
+  register: result
+
 
 - name: register stdout
-  debug: var=result.stdout_lines
-  tags: install,stop,start,status,updateconfig
+  debug: 
+    var: result.stdout_lines
+  tags: install,stop,start,status,updateconfig,updatejvm

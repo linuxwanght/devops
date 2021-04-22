@@ -1,10 +1,16 @@
-app_name: elasticsearch-6.2.2
-nodename: elasticsearch
+app_name: elasticsearch
+user: ec2-user
 tarball_name: elasticsearch-6.2.2.tar.gz
-zenhosts: "10.79.30.11","10.79.31.12","10.79.32.96"
-es_config: elasticsearch.yml.j2
+#tarball_name: elasticsearch-2.4.6.tar.gz
+clustername: elasticsearch
+elasticsearch_config: elasticsearch.yml.j2
 install_path: /opt/application
-
-
-
+dataDir: /opt/application/elasticsearch/data
+dataLogDir: /opt/application/elasticsearch/logs
+networkhost: 0.0.0.0
+clientPort: 9200
+node01: 10.79.31.166
+node02: 10.79.31.235
+node03: 10.79.31.57
+jvm: 1
 

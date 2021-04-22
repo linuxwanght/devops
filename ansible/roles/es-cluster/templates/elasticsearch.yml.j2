@@ -1,12 +1,11 @@
+cluster.name: {{clustername}}
 node.name: {{nodename}}
-path.data: /opt/application/{{app_name}}/data
-path.logs: /opt/application/{{app_name}}/logs
-network.host: 0.0.0.0
-http.port: 9200
-discovery.zen.ping.unicast.hosts: [{{zenhosts}}]
+path.data: {{dataDir}}
+path.logs: {{dataLogDir}}
+network.host: {{networkhost}}
+http.port: {{clientPort}}
+discovery.zen.ping.unicast.hosts: ["{{node01}}","{{node02}}","{{node03}}"]
 discovery.zen.minimum_master_nodes: 2
 http.cors.enabled: true
 http.cors.allow-origin: "*"
 thread_pool.bulk.queue_size: -1
-
-
