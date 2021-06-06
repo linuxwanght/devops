@@ -1,5 +1,0 @@
-- name: start filebeat     #notify下面指定的内容在name这里定义
-  command: systemctl start filebeat
-- name: restart filebeat     #notify下面指定的内容在name这里定义
-  command: systemctl restart filebeat
-
