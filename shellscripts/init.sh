@@ -86,6 +86,8 @@ fi
 
 #ssh登陆验证失败3次禁止此IP
 #get ssh_deny.sh
+
+
 #echo '*/5 * * * * root sh /root/ssh_deny.sh'  >> /etc/crontab
 
 #15分钟未动，服务器超时自动断开与客户端的链接
