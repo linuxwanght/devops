@@ -1,0 +1,183 @@
+{
+    "root": {
+        "data": {
+            "id": "chkmkyg1g3k0",
+            "created": 1643710045403,
+            "text": "网络排查工具"
+        },
+        "children": [
+            {
+                "data": {
+                    "id": "chkml9npfrc0",
+                    "created": 1643710069811,
+                    "text": "应用层http",
+                    "layout_mind_offset": {
+                        "x": 13,
+                        "y": -162
+                    }
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "chkmqjknk3s0",
+                            "created": 1643710483215,
+                            "text": "浏览器开发者工具"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "chkmp0ikezk0",
+                    "created": 1643710363366,
+                    "text": "表示层/会话层",
+                    "layout_mind_offset": {
+                        "x": 15,
+                        "y": -139
+                    }
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "chkmqpoobvc0",
+                            "created": 1643710496519,
+                            "text": "浏览器开发者工具"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "chkmqtnsmcw0",
+                            "created": 1643710505173,
+                            "text": "tcpdump + wireshark"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "chkmpnyyrr40",
+                    "created": 1643710414423,
+                    "text": "传输层",
+                    "layout_mind_offset": {
+                        "x": 21,
+                        "y": -141
+                    }
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "chkmr0qu1hc0",
+                            "created": 1643710520594,
+                            "text": "nc"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "chkmr33sogo0",
+                            "created": 1643710525731,
+                            "text": "iftop"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "chkmr6jiy880",
+                            "created": 1643710533214,
+                            "text": "telnet"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "chkmra0ils80",
+                            "created": 1643710540771,
+                            "text": "netstat"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "chkmrfjs70o0",
+                            "created": 1643710552819,
+                            "text": "ss"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "chkmof3zxx40",
+                    "created": 1643710316773,
+                    "text": "网络层",
+                    "layout_mind_offset": {
+                        "x": 613,
+                        "y": 303
+                    }
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "chkmrk4tcbc0",
+                            "created": 1643710562798,
+                            "text": "traceroute"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "chkmrp7ppcw0",
+                            "created": 1643710573858,
+                            "text": "route"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "chkmrrobtcg0",
+                            "created": 1643710579216,
+                            "text": "mtr"
+                        },
+                        "children": []
+                    },
+                    {
+                        "data": {
+                            "id": "chkmrueigio0",
+                            "created": 1643710585153,
+                            "text": "ip"
+                        },
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "data": {
+                    "id": "chkmpwp9e3k0",
+                    "created": 1643710433428,
+                    "text": "数据链路层/物理层",
+                    "layout_mind_offset": {
+                        "x": 672,
+                        "y": 340
+                    }
+                },
+                "children": [
+                    {
+                        "data": {
+                            "id": "chkmryws0hc0",
+                            "created": 1643710594964,
+                            "text": "ethtool"
+                        },
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    "template": "default",
+    "theme": "fresh-blue",
+    "version": "1.4.43"
+}
